@@ -1,0 +1,354 @@
+[
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ACC.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ACC.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ACCORD.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ACCORD.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ACCORD.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Car.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Car.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarSimulator.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarSimulator.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarTracker.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarTracker.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CommMessageScheduler.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CommMessageScheduler.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Geometry\\GridLine.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Geometry\\GridLine.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\IntersectionSegment.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\IntersectionSegment.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\IntersectionSlot.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\IntersectionSlot.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ReservationManager\\ReservationManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ReservationManager\\ReservationManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ReservationTiles\\TileRetriever.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ReservationTiles\\TileRetriever.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatedCar.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatedCar.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulationConstants.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatorTileChecker\\SimTileChecker.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatorTileChecker\\SimTileChecker.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatorTileRetrieval\\SimTileRetriever.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatorTileRetrieval\\SimTileRetriever.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Tiles\\Intersection.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Tiles\\Intersection.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Tiles\\Tile.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Tiles\\Tile.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Track.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Track.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\TrackSegment.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\TrackSegment.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\Vehicle.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\Vehicle.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\VehicleBounds.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\VehicleBounds.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\VehicleProperty.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\vehicle\\VehiclePropety.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
+		],
+		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
+	}
+]
