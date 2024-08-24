@@ -101,7 +101,6 @@ private:
 	TArray<double> m_orientationHistory;
 	CarDetails m_carDetails{};
 	VehicleProperty m_vehicleProperty{DEFAULT_XDim, DEFAULT_YDim, DEFAULT_XDim * 0.9, 100, 10, UKismetMathLibrary::DegreesToRadians(15)};
-	class CommMessageScheduler* m_commSched;
 	double GetTurnRadius() const;
 	void AddXLocationHistory(int xloc);
 	void AddYLocationHistory(int yloc);

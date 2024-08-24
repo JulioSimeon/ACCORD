@@ -6,6 +6,7 @@
 #include "../vehicle/VehicleBounds.h"
 #include "../Geometry/GridLine.h"
 #include "../Tiles/Intersection.h"
+#include <cmath>
 
 TileRetriever::TileRetriever(class Intersection* intersection)
 {
@@ -57,14 +58,14 @@ TileSet TileRetriever::GetOccupiedTiles(Vehicle* vehicle, double sampleInterval)
             {
                 continue;
             }
-            int remX = static_cast<int>(point.X) % static_cast<int>(m_intersection->GetLength());
-            int remY = static_cast<int>(point.Y) % static_cast<int>(m_intersection->GetLength());
+            int remX = fmod(point.X, m_intersection->GetTileLength());
+            int remY = fmod(point.Y, m_intersection->GetTileLength());
             if(remX == 0 || remY == 0)
             {
                 continue;
             }
-            int tileX = static_cast<int>(point.X / m_intersection->GetLength());
-            int tileY = static_cast<int>(point.Y / m_intersection->GetLength());
+            int tileX = static_cast<int>(point.X / m_intersection->GetTileLength());
+            int tileY = static_cast<int>(point.Y / m_intersection->GetTileLength());
             FIntPoint tileID(tileX, tileY);
             Tile tile(tileID, GetTileType(tileID));
             if(tileMap.Contains(tileX))
@@ -135,8 +136,8 @@ Tile* TileRetriever::GetMinTile(TileSet& set)
                 {
                     continue;
                 }
-                minTile = &tile;
             }
+            minTile = &tile;
         }
     }
     return minTile;
@@ -155,8 +156,8 @@ Tile* TileRetriever::GetMaxTile(TileSet& set)
                 {
                     continue;
                 }
-                maxTile = &tile;
             }
+            maxTile = &tile;
         }
     }
     return maxTile;

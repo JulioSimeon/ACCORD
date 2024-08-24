@@ -56,7 +56,7 @@ void Vehicle::Move(double dt)
     m_speed += dv;
     if(m_steeringAngle != 0)
     {
-        m_heading = static_cast<int>(m_heading + dHeading) % static_cast<int>(2 * PI);
+        m_heading = fmod(m_heading + dHeading, 2 * PI);
     }
 }
 
@@ -87,7 +87,7 @@ TArray<GridLine> Vehicle::GetBoundaries()
     boundaries.SetNum(corners.Num());
     for(int i{}; i < boundaries.Num(); i++)
     {
-        int iNext = (i + 1) * corners.Num();
+        int iNext = (i + 1) % corners.Num();
         boundaries[i] = GridLine(corners[i], corners[iNext]);
     }
     return boundaries;
@@ -105,9 +105,10 @@ double Vehicle::ComputeTurnRadius()
 double Vehicle::ComputeRotationalVelocity() 
 {
     double turnRadius = ComputeTurnRadius();
+    //UE_LOG(LogTemp, Warning, TEXT("Turn Radius: %f"), turnRadius);
     if(turnRadius)
     {
-        return m_speed / turnRadius;
+        return m_speed / turnRadius; //actual turn radius: 835
     }
     return 0;
 }

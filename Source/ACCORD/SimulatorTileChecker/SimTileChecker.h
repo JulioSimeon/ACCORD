@@ -11,7 +11,7 @@ class ACCORD_API SimTileChecker
 public:
 	SimTileChecker();
 	~SimTileChecker();
-    int static CheckForReservation(const TileTimes& tileTimes, const ReservationsMap& reservations);
+    int static CheckForReservation(TileTimes& tileTimes, const ReservationsMap& reservations);
 
 private:
 

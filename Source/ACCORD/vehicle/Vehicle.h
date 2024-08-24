@@ -26,6 +26,7 @@ public:
     void SetSteeringAngle(double steeringAngle);
     double GetHeading() const { return m_heading; }
     double GetSteeringAngle() const { return m_steeringAngle; }
+    TArray<FVector2D> GetCorners();
     
 private:
     VehicleProperty* m_property;
@@ -39,7 +40,6 @@ private:
     double m_rearStaticBuffer{};
     double m_leftStaticBuffer{};
     double m_rightStaticBuffer{};
-	TArray<FVector2D> GetCorners();
     TArray<GridLine> GetBoundaries();
     double ComputeRotationalVelocity();
     double ComputeTurnRadius();

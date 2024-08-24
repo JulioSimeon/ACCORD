@@ -2,7 +2,6 @@
 
 
 #include "SimulatedCar.h"
-#include "CommMessageScheduler.h"
 
 SimulatedCar::SimulatedCar()
 {
@@ -103,10 +102,6 @@ bool SimulatedCar::AdjustThrottle(int throttle)
         m_throttlePower = FMath::Max(0, throttle);
     }
     m_speed = GetSpeedEquivalent(m_throttlePower);
-    if(m_commSched)
-    {
-        m_commSched->CMDSetThrotte(m_id, m_throttlePower);
-    }
     return true; 
 }
 

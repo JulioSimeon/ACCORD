@@ -48,10 +48,10 @@ void SimTileRetriever::InitializeValues(Intersection* intersection)
     m_startPoints.SetNum(4);
     m_vehicleHeadings.SetNum(4);
     
-    m_startPoints[0] = FVector2D(0.75 * length, length);
-    m_startPoints[1] = FVector2D(0, 0.75 * length);
-    m_startPoints[2] = FVector2D(length, length / 4);
-    m_startPoints[3] = FVector2D(length / 4, 0);
+    m_startPoints[0] = FVector2D(0.75 * length, length + (m_vehicleProperty->GetLength() / 2));
+    m_startPoints[1] = FVector2D(-m_vehicleProperty->GetLength() / 2, 0.75 * length);
+    m_startPoints[2] = FVector2D(length + (m_vehicleProperty->GetLength() / 2), length / 4);
+    m_startPoints[3] = FVector2D(length / 4, -m_vehicleProperty->GetLength() / 2);
 
     m_vehicleHeadings[0] = FMath::DegreesToRadians(270);
     m_vehicleHeadings[1] = FMath::DegreesToRadians(0);
@@ -79,23 +79,33 @@ TileTimes SimTileRetriever::SimulateStraight()
     vehicle.SetPosition(m_startPoints[m_heading]);
     vehicle.SetSpeed(m_speed);
     vehicle.SetAcceleration(m_acceleration);
-    int dt{m_timeBase};
+    double dt = m_timeBase / FMath::Pow(10.f, 9.f);
+    //UE_LOG(LogTemp, Warning, TEXT("Simulate Straight Speed: %f"), vehicle.GetSpeed());
     TileRetriever tileRetriever(m_intersection);
     TileTimes tileTimes;
     double currentTime = m_arrivalTime;
     double targetSpeed = vehicle.GetProperty()->GetMaxSpeed();
 
-    while(m_intersection->IsInside(vehicle.GetPosition()))
+    //while(m_intersection->IsInside(vehicle.GetPosition()))
+    TArray<FVector2D> Corners = vehicle.GetCorners();
+    while(m_intersection->IsInside(Corners[0]) || m_intersection->IsInside(Corners[1]) || m_intersection->IsInside(Corners[2]) || m_intersection->IsInside(Corners[3]))
     {
-       TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 64);
-       tileTimes.Add(currentTime, occupiedTiles);
-       currentTime += m_timeBase;
-       if(vehicle.GetSpeed() >= targetSpeed)
+        TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 47); // sample interval = 940 / 47 = 20
+        int CurrentTime = currentTime * 100;
+        tileTimes.Add(static_cast<double>(CurrentTime) / 100, occupiedTiles); //tileTimes.Add(currentTime, occupiedTiles);
+        // UE_LOG(LogTemp, Warning, TEXT("Time: %f Speed: %f Position: %s"), currentTime, vehicle.GetSpeed(), *vehicle.GetPosition().ToString());
+        // for(auto value : occupiedTiles)
+        // {
+        //     UE_LOG(LogTemp, Warning, TEXT("Tile x:%d y:%d"), value.GetID().X, value.GetID().Y);
+        // }
+        currentTime += dt;
+        if(vehicle.GetSpeed() >= targetSpeed)
         {
             vehicle.SetSpeed(targetSpeed);
             vehicle.SetAcceleration(0);
         }
         vehicle.Move(dt);
+        Corners = vehicle.GetCorners();
     }
     return tileTimes;
 }
@@ -108,31 +118,45 @@ TileTimes SimTileRetriever::SimulateRightTurn()
     vehicle.SetSteeringAngle(vehicle.GetProperty()->GetMaxSteeringAngle());
     vehicle.SetSpeed(m_speed);
     vehicle.SetAcceleration(m_acceleration);
-    int dt{m_timeBase};
+    double dt = m_timeBase / FMath::Pow(10.f, 9.f);
+    // UE_LOG(LogTemp, Warning, TEXT("Simulate Right Turn DT: %f"), dt);
+    // UE_LOG(LogTemp, Warning, TEXT("Starting Position: %s"), *vehicle.GetPosition().ToString());
+    // UE_LOG(LogTemp, Warning, TEXT("Heading: %d"), m_heading);
+    // UE_LOG(LogTemp, Warning, TEXT("Speed: %f"), vehicle.GetSpeed());
+    // UE_LOG(LogTemp, Warning, TEXT("Steering Angle: %f"), vehicle.GetSteeringAngle());
     TileRetriever tileRetriever(m_intersection);
     TileTimes tileTimes;
     double currentTime = m_arrivalTime;
     double targetSpeed = vehicle.GetProperty()->GetMaxSpeed();
     double initialHeading = vehicle.GetHeading();
-    double finalHeading = fmod((initialHeading + FMath::DegreesToRadians(90)), (FMath::DegreesToRadians(360)));
+    double finalHeading = fmod((initialHeading + 90), 360);
     
-    while(m_intersection->IsInside(vehicle.GetPosition()))
+    TArray<FVector2D> Corners = vehicle.GetCorners();
+    while(m_intersection->IsInside(Corners[0]) || m_intersection->IsInside(Corners[1]) || m_intersection->IsInside(Corners[2]) || m_intersection->IsInside(Corners[3]))
+    //while(m_intersection->IsInside(vehicle.GetPosition()))
     {
-        TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 64);
-        tileTimes.Add(currentTime, occupiedTiles);
-        currentTime += m_timeBase;
+        TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 47); // sample interval = 940 / 47 = 20
+        int CurrentTime = currentTime * 100;
+        tileTimes.Add(static_cast<double>(CurrentTime) / 100, occupiedTiles); //tileTimes.Add(currentTime, occupiedTiles);
+        // UE_LOG(LogTemp, Warning, TEXT("Time: %f Speed: %f Position: %s Steering: %f Heading: %f"), currentTime, vehicle.GetSpeed(), *vehicle.GetPosition().ToString(), vehicle.GetSteeringAngle(), vehicle.GetHeading());
+        // for(auto value : occupiedTiles)
+        // {
+        //     UE_LOG(LogTemp, Warning, TEXT("Tile x:%d y:%d"), value.GetID().X, value.GetID().Y);
+        // }
+        currentTime += dt;
         if(vehicle.GetSpeed() >= targetSpeed)
         {
             vehicle.SetSpeed(targetSpeed);
             vehicle.SetAcceleration(0);
         }
-        double relativeHeading = fmod((vehicle.GetHeading() - initialHeading), (FMath::DegreesToRadians(360)));
-        if(relativeHeading >= FMath::DegreesToRadians(90) && vehicle.GetSteeringAngle() != 0)
+        double relativeHeading = fmod((vehicle.GetHeading() - initialHeading), 360);
+        if(relativeHeading >= 90 && vehicle.GetSteeringAngle() != 0)
         {
             vehicle.SetSteeringAngle(0);
             vehicle.SetHeading(finalHeading);
         }
         vehicle.Move(dt);
+        Corners = vehicle.GetCorners();
     }
     return tileTimes;
 }
@@ -144,7 +168,7 @@ TileTimes SimTileRetriever::SimulateLeftTurn()
     vehicle.SetPosition(m_startPoints[m_heading]);
     vehicle.SetSpeed(m_speed);
     vehicle.SetAcceleration(m_acceleration);
-    int dt{m_timeBase};
+    double dt = m_timeBase / FMath::Pow(10.f, 9.f);
     TileRetriever tileRetriever(m_intersection);
     TileTimes tileTimes;
     double currentTime = m_arrivalTime;
@@ -152,32 +176,40 @@ TileTimes SimTileRetriever::SimulateLeftTurn()
     
     FVector2D startPoint(vehicle.GetPosition().X, vehicle.GetPosition().Y);
     double initialHeading{fmod((2 * PI - m_heading), (2 * PI))};
-    double finalHeading{fmod(fmod((2 * PI - initialHeading), (2 * PI)) + FMath::DegreesToRadians(90), FMath::DegreesToRadians(360))};
+    double finalHeading{fmod(fmod((2 * PI - initialHeading), (2 * PI)) + 90, 360)};
     double steeringAngle{};
 
-    while(m_intersection->IsInside(vehicle.GetPosition()))
+    TArray<FVector2D> Corners = vehicle.GetCorners();
+    while(m_intersection->IsInside(Corners[0]) || m_intersection->IsInside(Corners[1]) || m_intersection->IsInside(Corners[2]) || m_intersection->IsInside(Corners[3]))
     {
-        TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 64);
-        tileTimes.Add(currentTime, occupiedTiles);
-        currentTime += m_timeBase;
+        TileSet occupiedTiles = tileRetriever.GetOccupiedTiles(&vehicle, m_intersection->GetTileLength() / 47); // sample interval = 940 / 47 = 20
+        int CurrentTime = currentTime * 100;
+        tileTimes.Add(static_cast<double>(CurrentTime) / 100, occupiedTiles); //tileTimes.Add(currentTime, occupiedTiles);
+        // UE_LOG(LogTemp, Warning, TEXT("Time: %f Speed: %f Position: %s"), currentTime, vehicle.GetSpeed(), *vehicle.GetPosition().ToString());
+        // for(auto value : occupiedTiles)
+        // {
+        //     UE_LOG(LogTemp, Warning, TEXT("Tile x:%d y:%d"), value.GetID().X, value.GetID().Y);
+        // }
+        currentTime += dt;
         if(vehicle.GetSpeed() >= targetSpeed)
         {
             vehicle.SetSpeed(targetSpeed);
             vehicle.SetAcceleration(0);
         }
         FVector2D position = vehicle.GetPosition();
-        if(FVector2D::Distance(position, startPoint) >= m_intersection->GetLength() / 2)
+        if(FVector2D::Distance(position, startPoint) >= m_intersection->GetLength() / 3)
         {
             steeringAngle = -vehicle.GetProperty()->GetMaxSteeringAngle();
         }
-        double relativeHeading = fmod(fmod(2 * PI - vehicle.GetHeading(), (2 * PI)) - initialHeading, FMath::DegreesToRadians(360));
-        if(relativeHeading >= FMath::DegreesToRadians(90))
+        double relativeHeading = fmod(fmod(2 * PI - vehicle.GetHeading(), (2 * PI)) - initialHeading, 360);
+        if(relativeHeading >= 90)
         {
             steeringAngle = 0;
             vehicle.SetHeading(finalHeading);
         }
         vehicle.SetSteeringAngle(steeringAngle);
         vehicle.Move(dt);
+        Corners = vehicle.GetCorners();
     }
     return tileTimes;
 }

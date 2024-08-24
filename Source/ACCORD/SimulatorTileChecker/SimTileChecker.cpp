@@ -11,7 +11,7 @@ SimTileChecker::~SimTileChecker()
 {
 }
 
-int SimTileChecker::CheckForReservation(const TileTimes& tileTimes, const ReservationsMap& reservations)
+int SimTileChecker::CheckForReservation(TileTimes& tileTimes, const ReservationsMap& reservations)
 {
     for(auto reservationEntry : reservations)
     {
@@ -22,8 +22,8 @@ int SimTileChecker::CheckForReservation(const TileTimes& tileTimes, const Reserv
             if(reservedTileTimes.Contains(time))
             {
                 TileSet reservedTiles = tileTimes[time];
-                reservedTiles.Intersect(reservedTileTimes[time]);
-                if(!reservedTiles.IsEmpty())
+                TileSet resultTiles = reservedTiles.Intersect(reservedTileTimes[time]);
+                if(!resultTiles.IsEmpty())
                 {
                     return reservationEntry.Key;
                 }

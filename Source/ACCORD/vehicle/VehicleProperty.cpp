@@ -25,5 +25,5 @@ double VehicleProperty::GetMinimumTurnRadius() const
 	{
 		return 0;
 	}
-	return UKismetMathLibrary::Sqrt(FMath::Pow(1.f / UKismetMathLibrary::Sin(m_maxSteeringAngle), 2) - 0.25) * m_wheelbase;
+	return FMath::Sqrt(FMath::Square(1.f / UKismetMathLibrary::Sin(m_maxSteeringAngle)) - 0.25) * m_wheelbase;
 }

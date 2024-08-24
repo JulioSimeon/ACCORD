@@ -29,6 +29,20 @@ bool ReservationManager::Reserve(Intersection* intersection, double arrivalTime,
 {
     SimTileRetriever tileRetriever(arrivalTime, speed, acceleration, vechicleProperty, intersection, direction, heading, vehicleID, timeBase);
     TileTimes path = tileRetriever.Simulate();
+    double LastTime{};
+    for(auto entry : path)
+    {
+        if(entry.Key > LastTime)
+        {
+            LastTime = entry.Key;
+        }
+        // UE_LOG(LogTemp, Warning, TEXT("Car: %d Time: %f Speed: %f"), vehicleID, entry.Key, speed);
+        // for(auto value : entry.Value)
+        // {
+        //     UE_LOG(LogTemp, Warning, TEXT("Tile x:%d y:%d"), value.GetID().X, value.GetID().Y);
+        // }
+    }
+    UE_LOG(LogTemp, Warning, TEXT("Car %d projected to exit intersection at time: %f"), vehicleID, LastTime);
     bool notReserved{SimTileChecker::CheckForReservation(path, m_reservations) == -1};
     if(notReserved)
     {

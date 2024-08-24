@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ReservationManager/ReservationManager.h"
+#include "Tiles/Intersection.h"
+#include "IntersectionSlot.h"
 #include "ACC.generated.h"
 
 UCLASS()
@@ -23,12 +26,22 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	static void RunPredetermined2DGrid(TArray<int> tags, TArray<int> headings, TArray<int> manuevers);
-
-	static void InitializeCar(class SimulatedCar* car, int tag, int heading, int direction);
-
-	static void InitializeSpeedTable(class SimulatedCar* car);
-
 private:
-	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UBoxComponent* ACCBoundary;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UBoxComponent* IntersectionBoundary;
+	Intersection intersection;
+	TArray<class ACar*> GetOverlappingCars();
+	TArray<IntersectionSlot> Slots;
+	IntersectionSlot* FindSlot(ACar* car);
+	ReservationManager ResMan;
+	int m_timeBaseNs{10 * 1000000};
+	double GetTimeToEntrance(ACar* car) const;
+	void AddSlot(ACar* car);
+	UFUNCTION()
+	void OnCarEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
+
 };
