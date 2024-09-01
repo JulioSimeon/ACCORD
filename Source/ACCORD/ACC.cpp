@@ -41,25 +41,21 @@ void AACC::Tick(float DeltaTime)
 		{
 			continue;
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Car has entered: %s, Car Speed: %f"), *car->GetActorNameOrLabel(), car->GetSpeedKPH());
 		double EntryTime = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("Entry Time: %f"), EntryTime);
 		double ArrivalTime = EntryTime + GetTimeToEntrance(car);
-		UE_LOG(LogTemp, Warning, TEXT("Arrival Time: %f"), ArrivalTime);
-		UE_LOG(LogTemp, Display, TEXT("Car Heading %d"), car->GetHeading());
-		if(ResMan.Reserve(&intersection, ArrivalTime, car->GetVehicleProperty(), car->GetSpeed(), 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
+		UE_LOG(LogTemp, Warning, TEXT("CarID: %d Car Speed: %f Entry Time: %f Arrival Time: %f Car Heading %d Car Throttle: %f Target Speed: %f"), car->GetID(), car->GetSpeedKPH(), EntryTime, ArrivalTime, car->GetHeading(), car->GetThrottleInput(), car->GetTargetSpeedKPH());
+		if(ResMan.Reserve(&intersection, ArrivalTime, car->GetVehicleProperty(), car->GetTargetSpeedKPH() * 27.7778, 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %s"), *car->GetActorNameOrLabel());
+			UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
 			AddSlot(car);
 			
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %s"), *car->GetActorNameOrLabel());
-			//car->DecreaseThrottle(ACar::DEFAULT_THROTTLE_STEP);
-			if(car->GetSpeedKPH() >= 5)
+			UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d"), car->GetID());
+			if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0)
 			{
-				car->SetTargetSpeed(car->GetSpeedKPH() - 5);
+				car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
 			}
 		}
 
@@ -88,7 +84,7 @@ double AACC::GetTimeToEntrance(ACar* car) const
 			return (FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - 470) / car->GetSpeed();
 		case EAST:
 		case WEST:
-			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - 470);
+			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - 470);
 			return (FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - 470) / car->GetSpeed();
 		default:
 			return 0;
@@ -106,7 +102,7 @@ void AACC::OnCarEndOverlap(class UPrimitiveComponent* OverlappedComp, class AAct
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
 		ResMan.Remove(car->GetID());
-		car->SetTargetSpeed(ACar::DEFAULT_SPEED_CEILING);
+		car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		UE_LOG(LogTemp, Warning, TEXT("Car %d exited intersection at time: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
 	}
 }

@@ -73,36 +73,46 @@ void ACar::InitializeHeading()
     {
         Heading = -1;
     }
-    UE_LOG(LogTemp, Warning, TEXT("Called Initialized Heading"));
-    UE_LOG(LogTemp, Warning, TEXT("Heading: %d"), Heading);
 }
 
 void ACar::MaintainSpeed()
 {
-    if(GetSpeedKPH() > TargetSpeed)
+    if(GetSpeedKPH() > TargetSpeedKPH)
     {
         GetVehicleMovementComponent()->DecreaseThrottleInput(0.1);
+        if(GetVehicleMovementComponent()->GetThrottleInput() < 0.1 && (GetSpeedKPH() - TargetSpeedKPH) > 2.5)
+        {
+            GetVehicleMovementComponent()->SetBrakeInput(0.5);
+            UE_LOG(LogTemp, Warning, TEXT("BREAKING!!!!! Car ID: %d Speed: %f TargetSpeed: %f"), ID, GetSpeedKPH(), TargetSpeedKPH);
+        }
+        else
+        {
+            GetVehicleMovementComponent()->SetBrakeInput(0);
+        }
     }
-    else if(GetSpeedKPH() < TargetSpeed)
+    else if(GetSpeedKPH() < TargetSpeedKPH)
     {
         GetVehicleMovementComponent()->IncreaseThrottleInput(0.1);
     }
 }
 
-void ACar::SetTargetSpeed(double speed)
+void ACar::SetTargetSpeedKPH(double speed)
 {
-    TargetSpeed = speed;
+    TargetSpeedKPH = speed;
+}
+
+double ACar::GetThrottleInput()
+{
+    return GetVehicleMovementComponent()->GetThrottleInput();
 }
 
 void ACar::BeginPlay()
 {
     Super::BeginPlay();
     InitializeHeading();
-    UE_LOG(LogTemp, Warning, TEXT("Direction: %d"), Direction);
     PathTag = GetPathTag();
     if(AActor* Path = GetActivePath())
     {
-        UE_LOG(LogTemp, Warning, TEXT("ActivePath Set"));
         SetActivePath(Path);
     }
    
@@ -152,11 +162,20 @@ AActor* ACar::GetActivePath() const
     return nullptr;
 }
 
+void ACar::PrintLogs()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Car ID: %d Speed KPH: %f Throttle Input: %f Target Speed: %f"), ID, GetSpeedKPH(), GetVehicleMovementComponent()->GetThrottleInput(), TargetSpeedKPH);
+}
+
 void ACar::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     if(IsActive)
     {
         MaintainSpeed();
+    }
+    if(ShouldPrintLogs)
+    {
+        PrintLogs();
     }
 }

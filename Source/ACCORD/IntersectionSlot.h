@@ -15,9 +15,6 @@ public:
     ACar* Car = nullptr;
     int Heading{};
     int Direction{};
-    // TrackSegment* enterFrom = nullptr;
-    // TrackSegment* exitTo = nullptr;
-    // TArray<TrackSegment*> route;
     bool IsReserved = false;
 
 private:

@@ -41,7 +41,9 @@ public:
 	void DecreaseThrottle(double throttle);
 	void InitializeHeading();
 	void MaintainSpeed();
-	void SetTargetSpeed(double speed);
+	void SetTargetSpeedKPH(double speed);
+	double GetTargetSpeedKPH() const { return TargetSpeedKPH; }
+	double GetThrottleInput();
 
 protected:
 	// Called when the game starts or when spawned
@@ -52,14 +54,14 @@ protected:
 	int Heading{};
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FName PathTag{};
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
+	bool IsActive{};
 	FName GetPathTag() const;
 	AActor* GetActivePath() const;
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetActivePath(AActor* Path);
 
 private:
-	UPROPERTY(EditInstanceOnly)
-	bool IsActive{};
 	UPROPERTY(EditInstanceOnly)
 	int ID{};
 	VehicleProperty m_vehicleProperty{DEFAULT_XDim, DEFAULT_YDim, DEFAULT_Wheelbase, 1400, 233, FMath::DegreesToRadians(23.48)}; //default: 17 calculated: 23.48 upper: 40
@@ -72,5 +74,8 @@ private:
 	int m_ydim{DEFAULT_YDim};
 	double m_speed{};
 	UPROPERTY(EditAnywhere)
-	double TargetSpeed{50};
+	double TargetSpeedKPH{DEFAULT_SPEED_CEILING};
+	void PrintLogs();
+	UPROPERTY(EditInstanceOnly)
+	bool ShouldPrintLogs{};
 };
