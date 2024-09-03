@@ -39,11 +39,14 @@ public:
 	float GetSpeed() const;
 	void SetThrottle(double throttle);
 	void DecreaseThrottle(double throttle);
-	void InitializeHeading();
+	void UpdateHeading();
 	void MaintainSpeed();
 	void SetTargetSpeedKPH(double speed);
 	double GetTargetSpeedKPH() const { return TargetSpeedKPH; }
 	double GetThrottleInput();
+	void SetExitPath();
+	void SetEntrancePath();
+	bool IsEntrancePathSet() const { return bIsEntrancePathSet; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,11 +56,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int Heading{};
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FName PathTag{};
+	FName ActivePathTag{};
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
 	bool IsActive{};
 	FName GetPathTag() const;
-	AActor* GetActivePath() const;
+	AActor* GetActivePath(FName PathTag) const;
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetActivePath(AActor* Path);
 
@@ -78,4 +81,6 @@ private:
 	void PrintLogs();
 	UPROPERTY(EditInstanceOnly)
 	bool ShouldPrintLogs{};
+	FName GetExitTag();
+	bool bIsEntrancePathSet{};
 };

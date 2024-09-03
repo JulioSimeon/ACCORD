@@ -26,40 +26,61 @@ void AACC::BeginPlay()
 {
 	Super::BeginPlay();
 	intersection = Intersection(940, 4);
-	IntersectionBoundary->OnComponentEndOverlap.AddDynamic(this, &AACC::OnCarEndOverlap);
+	IntersectionBoundary->OnComponentEndOverlap.AddDynamic(this, &AACC::OnCarEndIntersectionOverlap);
+	IntersectionBoundary->OnComponentBeginOverlap.AddDynamic(this, &AACC::OnCarBeginIntersectionOverlap);
+	ACCBoundary->OnComponentBeginOverlap.AddDynamic(this, &AACC::OnCarBeginBoundaryOverlap);
+	ACCBoundary->OnComponentEndOverlap.AddDynamic(this, &AACC::OnCarEndBoundaryOverlap);
 }
 
 // Called every frame
 void AACC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	TArray<ACar*> OverlappingCars = GetOverlappingCars();
-	for(ACar* car : OverlappingCars)
+	if(IsActive)
 	{
-		
-		if(FindSlot(car))
+		TArray<ACar*> OverlappingCars = GetOverlappingCars();
+		if(CarsInsideIntersection.Num() == 1 && CarsInsideIntersection[0]->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING)
 		{
-			continue;
+			CarsInsideIntersection[0]->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		}
-		double EntryTime = GetWorld()->GetTimeSeconds();
-		double ArrivalTime = EntryTime + GetTimeToEntrance(car);
-		UE_LOG(LogTemp, Warning, TEXT("CarID: %d Car Speed: %f Entry Time: %f Arrival Time: %f Car Heading %d Car Throttle: %f Target Speed: %f"), car->GetID(), car->GetSpeedKPH(), EntryTime, ArrivalTime, car->GetHeading(), car->GetThrottleInput(), car->GetTargetSpeedKPH());
-		if(ResMan.Reserve(&intersection, ArrivalTime, car->GetVehicleProperty(), car->GetTargetSpeedKPH() * 27.7778, 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
+		for(ACar* car : OverlappingCars)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
-			AddSlot(car);
-			
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d"), car->GetID());
-			if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0)
+			if(FindSlot(car))
 			{
-				car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
+				continue;
 			}
-		}
+			if(!car->IsEntrancePathSet())
+			{
+				car->SetEntrancePath();
+				UE_LOG(LogTemp, Warning, TEXT("Setting Entrance Path of car %d"), car->GetID());
+			}
+			double EntryTime = GetWorld()->GetTimeSeconds();
+			double ArrivalTime = EntryTime + GetTimeToEntrance(car);
+			UE_LOG(LogTemp, Warning, TEXT("CarID: %d Car Speed: %f Entry Time: %f Arrival Time: %f Car Heading %d Car Throttle: %f Target Speed: %f"), car->GetID(), car->GetSpeedKPH(), EntryTime, ArrivalTime, car->GetHeading(), car->GetThrottleInput(), car->GetTargetSpeedKPH());
+			if(ResMan.Reserve(&intersection, ArrivalTime, car->GetVehicleProperty(), car->GetTargetSpeedKPH() * 27.7778, 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
+				AddSlot(car);
+				
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d"), car->GetID());
+				// if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0 )
+				// {
+				// 	car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
+				// }
+				if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0  && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < 1)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Speed Reduced"));
+					car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - 5);
+					//car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
+				}
+			}
 
+		}
 	}
+	
 }
 
 IntersectionSlot* AACC::FindSlot(ACar* car)
@@ -97,14 +118,50 @@ void AACC::AddSlot(ACar* car)
 	Slots.Add(slot);
 }
 
-void AACC::OnCarEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AACC::OnCarEndBoundaryOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if(ACar* car = Cast<ACar>(OtherActor))
+	{
+
+		for(int i{}; i < Slots.Num(); i++)
+		{
+			if(Slots[i].Car->GetID() == car->GetID())
+			{
+				Slots.RemoveAt(i);
+			}
+		}
+		car->SetExitPath();
+		UE_LOG(LogTemp, Warning, TEXT("Setting Exit Path of car %d"), car->GetID());
+	}
+}
+
+void AACC::OnCarEndIntersectionOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
 		ResMan.Remove(car->GetID());
 		car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		UE_LOG(LogTemp, Warning, TEXT("Car %d exited intersection at time: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
+		CarsInsideIntersection.Remove(car);
 	}
+}
+
+void AACC::OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// if(ACar* car = Cast<ACar>(OtherActor))
+	// {
+	// 	car->SetEntrancePath();
+	// 	UE_LOG(LogTemp, Warning, TEXT("Setting Entrance Path of car %d"), car->GetID());
+	// }
+}
+
+void AACC::OnCarBeginIntersectionOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(ACar* car = Cast<ACar>(OtherActor))
+	{
+		CarsInsideIntersection.Add(car);
+	}
+	
 }
 
 TArray<ACar*> AACC::GetOverlappingCars()

@@ -46,26 +46,27 @@ void ACar::DecreaseThrottle(double throttle)
     
 }
 
-void ACar::InitializeHeading()
+void ACar::UpdateHeading()
 {
     double rotation = GetActorRotation().Yaw;
     if(rotation < 0)
     {
         rotation += 360;
     }
-    if(FMath::Abs(rotation) <= 30)
+    UE_LOG(LogTemp, Warning, TEXT("Update Heading Called for car: %d rotation: %f"), ID, rotation);
+    if(FMath::Abs(rotation) <= 45 || FMath::Abs(rotation - 360) <= 45)
     {
         Heading = WEST;
     }
-    else if(FMath::Abs(rotation - 90) <= 30)
+    else if(FMath::Abs(rotation - 90) <= 45)
     {
         Heading = NORTH;
     }
-    else if(FMath::Abs(rotation - 180) <= 30)
+    else if(FMath::Abs(rotation - 180) <= 45)
     {
         Heading = EAST;
     }
-    else if(FMath::Abs(rotation - 270) <= 30)
+    else if(FMath::Abs(rotation - 270) <= 45)
     {
         Heading = SOUTH;
     }
@@ -106,16 +107,32 @@ double ACar::GetThrottleInput()
     return GetVehicleMovementComponent()->GetThrottleInput();
 }
 
-void ACar::BeginPlay()
+void ACar::SetExitPath()
 {
-    Super::BeginPlay();
-    InitializeHeading();
-    PathTag = GetPathTag();
-    if(AActor* Path = GetActivePath())
+    UpdateHeading();
+    ActivePathTag = GetExitTag();
+    if(AActor* Path = GetActivePath(ActivePathTag))
     {
         SetActivePath(Path);
     }
-   
+    bIsEntrancePathSet = false;
+}
+
+void ACar::SetEntrancePath()
+{
+    UpdateHeading();
+    ActivePathTag = GetPathTag();
+    if(AActor* Path = GetActivePath(ActivePathTag))
+    {
+        SetActivePath(Path);
+    }
+    bIsEntrancePathSet = true;
+}
+
+void ACar::BeginPlay()
+{
+    Super::BeginPlay();
+    SetEntrancePath();
 }
 
 FName ACar::GetPathTag() const
@@ -151,7 +168,7 @@ FName ACar::GetPathTag() const
     return FName(Tag);
 }
 
-AActor* ACar::GetActivePath() const
+AActor* ACar::GetActivePath(FName PathTag) const
 {
     TArray<AActor*> Paths;
     UGameplayStatics::GetAllActorsOfClassWithTag(this, PathClass, PathTag, Paths);
@@ -165,6 +182,23 @@ AActor* ACar::GetActivePath() const
 void ACar::PrintLogs()
 {
     UE_LOG(LogTemp, Warning, TEXT("Car ID: %d Speed KPH: %f Throttle Input: %f Target Speed: %f"), ID, GetSpeedKPH(), GetVehicleMovementComponent()->GetThrottleInput(), TargetSpeedKPH);
+}
+
+FName ACar::GetExitTag()
+{
+    switch(Heading)
+    {
+        case 0:
+            return FName("N");
+        case 1:
+            return FName("E");
+        case 2:
+            return FName("W");
+        case 3:
+            return FName("S");
+        default:
+            return FName("0");
+    }
 }
 
 void ACar::Tick(float DeltaTime)

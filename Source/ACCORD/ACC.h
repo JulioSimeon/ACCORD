@@ -33,6 +33,7 @@ private:
 	UBoxComponent* IntersectionBoundary;
 	Intersection intersection;
 	TArray<class ACar*> GetOverlappingCars();
+	TArray<ACar*> CarsInsideIntersection;
 	TArray<IntersectionSlot> Slots;
 	IntersectionSlot* FindSlot(ACar* car);
 	ReservationManager ResMan;
@@ -40,8 +41,15 @@ private:
 	double GetTimeToEntrance(ACar* car) const;
 	void AddSlot(ACar* car);
 	UFUNCTION()
-	void OnCarEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
+	void OnCarEndBoundaryOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION()
+	void OnCarEndIntersectionOverlap(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION()
+	void OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnCarBeginIntersectionOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPROPERTY(EditInstanceOnly)
+	bool IsActive{true};
 
 
 };
