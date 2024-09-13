@@ -45,6 +45,7 @@ public:
 	double GetTargetSpeedKPH() const { return TargetSpeedKPH; }
 	double GetThrottleInput();
 	void SetExitPath();
+	UFUNCTION(BlueprintCallable)
 	void SetEntrancePath();
 	bool IsEntrancePathSet() const { return bIsEntrancePathSet; }
 
@@ -63,7 +64,11 @@ protected:
 	AActor* GetActivePath(FName PathTag) const;
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetActivePath(AActor* Path);
-
+	UFUNCTION(BlueprintCallable)
+	void SetIsActive();
+	UFUNCTION(BlueprintCallable)
+	void SetDirection(int NewDirection);
+	
 private:
 	UPROPERTY(EditInstanceOnly)
 	int ID{};

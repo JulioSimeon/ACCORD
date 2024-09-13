@@ -34,6 +34,7 @@ private:
 	Intersection intersection;
 	TArray<class ACar*> GetOverlappingCars();
 	TArray<ACar*> CarsInsideIntersection;
+	TArray<ACar*> ApproachingCars;
 	TArray<IntersectionSlot> Slots;
 	IntersectionSlot* FindSlot(ACar* car);
 	ReservationManager ResMan;

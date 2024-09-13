@@ -132,7 +132,7 @@ void ACar::SetEntrancePath()
 void ACar::BeginPlay()
 {
     Super::BeginPlay();
-    SetEntrancePath();
+    //SetEntrancePath();
 }
 
 FName ACar::GetPathTag() const
@@ -177,6 +177,16 @@ AActor* ACar::GetActivePath(FName PathTag) const
        return Paths[0]; 
     }
     return nullptr;
+}
+
+void ACar::SetIsActive()
+{
+    IsActive = true;
+}
+
+void ACar::SetDirection(int NewDirection)
+{
+    Direction = NewDirection;
 }
 
 void ACar::PrintLogs()

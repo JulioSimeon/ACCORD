@@ -43,6 +43,10 @@ void AACC::Tick(float DeltaTime)
 		{
 			CarsInsideIntersection[0]->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		}
+		if(ApproachingCars.Num() == 1 && ApproachingCars[0]->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING)
+		{
+			ApproachingCars[0]->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
+		}
 		for(ACar* car : OverlappingCars)
 		{
 			if(FindSlot(car))
@@ -60,21 +64,15 @@ void AACC::Tick(float DeltaTime)
 			if(ResMan.Reserve(&intersection, ArrivalTime, car->GetVehicleProperty(), car->GetTargetSpeedKPH() * 27.7778, 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
-				AddSlot(car);
-				
+				AddSlot(car);				
 			}
 			else
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d"), car->GetID());
-				// if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0 )
-				// {
-				// 	car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
-				// }
-				if(car->GetSpeedKPH() >= 5 && fmod(car->GetSpeedKPH(), 5) > 0  && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < 1)
+				if(car->GetTargetSpeedKPH() >= 5 && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < 1)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Speed Reduced"));
 					car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - 5);
-					//car->SetTargetSpeedKPH(car->GetSpeedKPH() - fmod(car->GetSpeedKPH(), 5));
 				}
 			}
 
@@ -143,16 +141,16 @@ void AACC::OnCarEndIntersectionOverlap(class UPrimitiveComponent* OverlappedComp
 		car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		UE_LOG(LogTemp, Warning, TEXT("Car %d exited intersection at time: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
 		CarsInsideIntersection.Remove(car);
+		ApproachingCars.Remove(car);
 	}
 }
 
 void AACC::OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// if(ACar* car = Cast<ACar>(OtherActor))
-	// {
-	// 	car->SetEntrancePath();
-	// 	UE_LOG(LogTemp, Warning, TEXT("Setting Entrance Path of car %d"), car->GetID());
-	// }
+	if(ACar* car = Cast<ACar>(OtherActor))
+	{
+		ApproachingCars.Add(car);
+	}
 }
 
 void AACC::OnCarBeginIntersectionOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
