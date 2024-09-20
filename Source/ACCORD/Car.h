@@ -35,8 +35,8 @@ public:
 	int GetHeading() const { return Heading; }
 	int GetDirection() const { return Direction; }
 	VehicleProperty* GetVehicleProperty() { return &m_vehicleProperty; }
-	float GetSpeedKPH() const;
-	float GetSpeed() const;
+	double GetSpeedKPH() const;
+	double GetSpeed() const;
 	void SetThrottle(double throttle);
 	void DecreaseThrottle(double throttle);
 	void UpdateHeading();

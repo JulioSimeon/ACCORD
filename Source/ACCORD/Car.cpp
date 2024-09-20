@@ -21,12 +21,12 @@ void ACar::AddRouteDirection(int direction)
     
 }
 
-float ACar::GetSpeedKPH() const
+double ACar::GetSpeedKPH() const
 {
     return FMath::Abs(GetVehicleMovementComponent()->GetForwardSpeed()) * 0.036;
 }
 
-float ACar::GetSpeed() const
+double ACar::GetSpeed() const
 {
     return FMath::Abs(GetVehicleMovementComponent()->GetForwardSpeed());
 }
@@ -53,7 +53,7 @@ void ACar::UpdateHeading()
     {
         rotation += 360;
     }
-    UE_LOG(LogTemp, Warning, TEXT("Update Heading Called for car: %d rotation: %f"), ID, rotation);
+    //UE_LOG(LogTemp, Warning, TEXT("Update Heading Called for car: %d rotation: %f"), ID, rotation);
     if(FMath::Abs(rotation) <= 45 || FMath::Abs(rotation - 360) <= 45)
     {
         Heading = WEST;
@@ -84,7 +84,7 @@ void ACar::MaintainSpeed()
         if(GetVehicleMovementComponent()->GetThrottleInput() < 0.1 && (GetSpeedKPH() - TargetSpeedKPH) > 2.5)
         {
             GetVehicleMovementComponent()->SetBrakeInput(0.5);
-            UE_LOG(LogTemp, Warning, TEXT("BREAKING!!!!! Car ID: %d Speed: %f TargetSpeed: %f"), ID, GetSpeedKPH(), TargetSpeedKPH);
+            //UE_LOG(LogTemp, Warning, TEXT("BRAKING!!!!! Car ID: %d Speed: %f TargetSpeed: %f"), ID, GetSpeedKPH(), TargetSpeedKPH);
         }
         else
         {
@@ -94,7 +94,9 @@ void ACar::MaintainSpeed()
     else if(GetSpeedKPH() < TargetSpeedKPH)
     {
         GetVehicleMovementComponent()->IncreaseThrottleInput(0.1);
+        GetVehicleMovementComponent()->SetBrakeInput(0);
     }
+    //UE_LOG(LogTemp, Warning, TEXT("Steering: %f"), GetVehicleMovementComponent()->GetSteeringInput());
 }
 
 void ACar::SetTargetSpeedKPH(double speed)
@@ -132,7 +134,6 @@ void ACar::SetEntrancePath()
 void ACar::BeginPlay()
 {
     Super::BeginPlay();
-    //SetEntrancePath();
 }
 
 FName ACar::GetPathTag() const

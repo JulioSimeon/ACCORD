@@ -31,10 +31,11 @@ private:
 	class UBoxComponent* ACCBoundary;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* IntersectionBoundary;
-	Intersection intersection;
+	Intersection m_intersection;
 	TArray<class ACar*> GetOverlappingCars();
 	TArray<ACar*> CarsInsideIntersection;
 	TArray<ACar*> ApproachingCars;
+	TArray<ACar*> CarsAwaitingReservation;
 	TArray<IntersectionSlot> Slots;
 	IntersectionSlot* FindSlot(ACar* car);
 	ReservationManager ResMan;
@@ -49,8 +50,11 @@ private:
 	void OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnCarBeginIntersectionOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void RetryReservation(ACar* car);
 	UPROPERTY(EditInstanceOnly)
 	bool IsActive{true};
-
+	FTimerDelegate Delegate;
+	TMap<ACar*, FTimerHandle> TimerMap;
 
 };
