@@ -56,22 +56,6 @@
 		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
 	},
 	{
-		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarTracker.cpp",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
-		],
-		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\CarTracker.h",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
-		],
-		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
-	},
-	{
 		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\Geometry\\GridLine.cpp",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
@@ -129,22 +113,6 @@
 	},
 	{
 		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\ReservationTiles\\TileRetriever.h",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
-		],
-		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatedCar.cpp",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
-			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"
-		],
-		"directory": "C:\\Epic Games\\UE_5.2\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\Source\\ACCORD\\SimulatedCar.h",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.40.33807\\bin\\Hostx64\\x64\\cl.exe",
 			"@C:\\Users\\Tiber Septimus\\Documents\\Unreal Projects\\ACCORD\\.vscode\\compileCommands_Default\\ACCORD.264.rsp"

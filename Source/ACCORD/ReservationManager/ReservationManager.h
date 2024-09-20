@@ -13,6 +13,7 @@ public:
 
     bool Remove(int vehicleID);
     bool Reserve(class Intersection* intersection, double arrivalTime, class VehicleProperty* vechicleProperty, double speed, double acceleration, int heading, int direction, int vehicleID, int timeBase);
+    void Reset();
 
 private:
     ReservationsMap m_reservations;

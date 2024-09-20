@@ -51,3 +51,8 @@ bool ReservationManager::Reserve(Intersection* intersection, double arrivalTime,
     return notReserved;
 }
 
+void ReservationManager::Reset()
+{
+    m_reservations.Empty();
+}
+

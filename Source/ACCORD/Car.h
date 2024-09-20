@@ -18,27 +18,23 @@ class ACCORD_API ACar : public AWheeledVehiclePawn
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetAttributes(int id, int x, int y, double orientation, int xdim, int ydim, double speed);
-	int getID() const;
 
-	//dimension in centimeters
-	static const int DEFAULT_XDim = 470;
-    static const int DEFAULT_YDim = 225;
-	static const int DEFAULT_Wheelbase = 265;
-	static const int DEFAULT_SPEED_CEILING = 50;
+	static const int DEFAULT_XDim = 470; //centimeters
+    static const int DEFAULT_YDim = 225; //centimeters
+	static const int DEFAULT_Wheelbase = 265; //centimeters
+	static const int DEFAULT_SPEED_CEILING = 50; //kilometers per hour
+	static inline const double DEFAULT_SPEED_CEILING_CMS = 1400; //centimeters per second
+	static inline const double DEFAULT_MAX_ACCELERATION_CMS = 233; //centimeters per second
+	static inline const double DEFAULT_STEERING_ANGLE = 23.48; //degrees; default: 17 calculated: 23.48 upper: 40
 	static const int DEFAULT_THROTTLE_CEILING = 1;
     static const int DEFAULT_THROTTLE_FLOOR = 0;
-	static const int DEFAULT_THROTTLE_STEP = 0.1;
-	virtual double GetSpeedEquivalent(int throttle) const;
-	virtual void AddRouteDirection(int direction);
+	static inline const double DEFAULT_THROTTLE_STEP = 0.1;
 	int GetID() const { return ID; }
 	int GetHeading() const { return Heading; }
 	int GetDirection() const { return Direction; }
 	VehicleProperty* GetVehicleProperty() { return &m_vehicleProperty; }
 	double GetSpeedKPH() const;
 	double GetSpeed() const;
-	void SetThrottle(double throttle);
-	void DecreaseThrottle(double throttle);
 	void UpdateHeading();
 	void MaintainSpeed();
 	void SetTargetSpeedKPH(double speed);
@@ -52,6 +48,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly)
 	int Direction{-1};
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -72,11 +69,9 @@ protected:
 private:
 	UPROPERTY(EditInstanceOnly)
 	int ID{};
-	VehicleProperty m_vehicleProperty{DEFAULT_XDim, DEFAULT_YDim, DEFAULT_Wheelbase, 1400, 233, FMath::DegreesToRadians(23.48)}; //default: 17 calculated: 23.48 upper: 40
+	VehicleProperty m_vehicleProperty{DEFAULT_XDim, DEFAULT_YDim, DEFAULT_Wheelbase, DEFAULT_SPEED_CEILING_CMS, DEFAULT_MAX_ACCELERATION_CMS, FMath::DegreesToRadians(DEFAULT_STEERING_ANGLE)}; 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> PathClass;
-	int m_x{};
-	int m_y{};
 	double m_orientation{};
 	int m_xdim{DEFAULT_XDim};
 	int m_ydim{DEFAULT_YDim};

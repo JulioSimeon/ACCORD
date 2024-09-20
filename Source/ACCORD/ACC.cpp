@@ -6,8 +6,7 @@
 #include "SimulationConstants.h"
 #include "Components/BoxComponent.h"
 #include "ChaosVehicleMovementComponent.h"
-#include <sstream>
-#include <string>
+
 
 // Sets default values
 AACC::AACC()
@@ -22,19 +21,18 @@ AACC::AACC()
 
 void AACC::ResetReservations()
 {
-	CarsInsideIntersection.Empty();
 	ApproachingCars.Empty();
-	CarsAwaitingReservation.Empty();
 	Slots.Empty();
 	TimerMap.Empty();
 	GetWorldTimerManager().ClearAllTimersForObject(this);
+	ResMan.Reset();
 }
 
 // Called when the game starts or when spawned
 void AACC::BeginPlay()
 {
 	Super::BeginPlay();
-	m_intersection = Intersection(940, 4);
+	m_intersection = Intersection(LaneWidth * 2, IntersectionResolution);
 	IntersectionBoundary->OnComponentEndOverlap.AddDynamic(this, &AACC::OnCarEndIntersectionOverlap);
 	IntersectionBoundary->OnComponentBeginOverlap.AddDynamic(this, &AACC::OnCarBeginIntersectionOverlap);
 	ACCBoundary->OnComponentBeginOverlap.AddDynamic(this, &AACC::OnCarBeginBoundaryOverlap);
@@ -45,61 +43,20 @@ void AACC::BeginPlay()
 void AACC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(IsActive)
-	{
-		TArray<ACar*> OverlappingCars = GetOverlappingCars();
-		if(CarsInsideIntersection.Num() == 1 && CarsInsideIntersection[0]->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING && FMath::Abs(CarsInsideIntersection[0]->GetVehicleMovementComponent()->GetSteeringInput()) < 0.5)
-		{
-			CarsInsideIntersection[0]->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
-		}
-		if(ApproachingCars.Num() == 1 && ApproachingCars[0]->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING && FMath::Abs(ApproachingCars[0]->GetVehicleMovementComponent()->GetSteeringInput()) < 0.5)
-		{
-			ApproachingCars[0]->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
-		}
-		if(Slots.Num() >= 1)
-		{
-			if(Slots[0].Car->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING && FMath::Abs(Slots[0].Car->GetVehicleMovementComponent()->GetSteeringInput()) < 0.5)
-			{
-				Slots[0].Car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
-			}
-		}
-		for(ACar* car : OverlappingCars)
-		{
-			if(FindSlot(car) || CarsAwaitingReservation.Contains(car) || !ApproachingCars.Contains(car))
-			{
-				continue;
-			}
-			if(!car->IsEntrancePathSet())
-			{
-				car->SetEntrancePath();
-				UE_LOG(LogTemp, Warning, TEXT("Setting Entrance Path of car %d"), car->GetID());
-			}
-			double EntryTime = GetWorld()->GetTimeSeconds();
-			double ArrivalTime = EntryTime + GetTimeToEntrance(car);
-			UE_LOG(LogTemp, Warning, TEXT("CarID: %d Car Speed: %f Entry Time: %f Arrival Time: %f Car Heading %d Car Throttle: %f Target Speed: %f"), car->GetID(), car->GetSpeedKPH(), EntryTime, ArrivalTime, car->GetHeading(), car->GetThrottleInput(), car->GetTargetSpeedKPH());
-			if(ResMan.Reserve(&m_intersection, ArrivalTime, car->GetVehicleProperty(), car->GetTargetSpeedKPH() * 27.7778, 0, car->GetHeading(), car->GetDirection(), car->GetID(), m_timeBaseNs))
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
-				AddSlot(car);	
-			}
-			else
-			{
-				CarsAwaitingReservation.Add(car);
-				UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d"), car->GetID());
-				if(car->GetTargetSpeedKPH() >= 5 && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < 1)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Speed Reduced"));
-					car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - 5);
-				}
-				FTimerDelegate Delegate;
-				Delegate.BindUFunction(this, "RetryReservation", car);
-				FTimerHandle TimerHandle;
-				TimerMap.Add(car, TimerHandle);
-				GetWorldTimerManager().SetTimer(TimerMap[car], Delegate, 0.25, true);	
-			}
-		}
-	}
-	
+	// if(IsActive)
+	// {
+	//	AccelerateLeadCar();
+	// 	TArray<ACar*> OverlappingCars = GetOverlappingCars();
+	// 	for(ACar* car : OverlappingCars)
+	// 	{
+	// 		if(FindSlot(car) || TimerMap.Contains(car) || !ApproachingCars.Contains(car)) // car already has reservation || timer has been set to retry reservation again || car already has left intersection but is still within boundaries
+	// 		{
+	// 			continue;
+	// 		}
+	// 		SetEntrancePathIfUnset(car);
+	// 		Reserve(car);
+	// 	}
+	// }
 }
 
 IntersectionSlot* AACC::FindSlot(ACar* car)
@@ -120,12 +77,12 @@ double AACC::GetTimeToEntrance(ACar* car) const
 	{
 		case NORTH:
 		case SOUTH: 
-			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - 470);
-			return (FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - 470) / car->GetSpeed();
+			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - LaneWidth);
+			return (FMath::Abs(car->GetActorLocation().Y) - (ACar::DEFAULT_XDim / 2) - LaneWidth) / car->GetSpeed();
 		case EAST:
 		case WEST:
-			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - 470);
-			return (FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - 470) / car->GetSpeed();
+			UE_LOG(LogTemp, Warning, TEXT("Distance to the intersection: %f"), FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - LaneWidth);
+			return (FMath::Abs(car->GetActorLocation().X) - (ACar::DEFAULT_XDim / 2) - LaneWidth) / car->GetSpeed();
 		default:
 			return 0;
 	}
@@ -141,8 +98,6 @@ void AACC::OnCarEndBoundaryOverlap(class UPrimitiveComponent* OverlappedComp, AA
 {
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
-
-		
 		car->SetExitPath();
 		UE_LOG(LogTemp, Warning, TEXT("Setting Exit Path of car %d"), car->GetID());
 	}
@@ -157,12 +112,12 @@ void AACC::OnCarEndIntersectionOverlap(class UPrimitiveComponent* OverlappedComp
 			if(Slots[i].Car->GetID() == car->GetID())
 			{
 				Slots.RemoveAt(i);
+				AccelerateLeadCar();
 			}
 		}
 		ResMan.Remove(car->GetID());
 		car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		UE_LOG(LogTemp, Warning, TEXT("Car %d exited intersection at time: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
-		CarsInsideIntersection.Remove(car);
 		ApproachingCars.Remove(car);
 	}
 }
@@ -172,27 +127,21 @@ void AACC::OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
 		ApproachingCars.Add(car);
+		if(FindSlot(car) || TimerMap.Contains(car) || !ApproachingCars.Contains(car)) // car already has reservation || timer has been set to retry reservation again || car already has left intersection but is still within boundaries
+		{
+			return;
+		}
+		SetEntrancePathIfUnset(car);
+		Reserve(car);
 	}
 }
 
 void AACC::OnCarBeginIntersectionOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(ACar* car = Cast<ACar>(OtherActor))
-	{
-		CarsInsideIntersection.Add(car);
-		// if(CarsAwaitingReservation.Contains(car))
-		// {
-		// 	CarsAwaitingReservation.Remove(car);
-		// }
-		// if(TimerMap.Contains(car))
-		// {
-		// 	TimerMap.Remove(car);
-		// }
-	}
 	
 }
 
-void AACC::RetryReservation(ACar* car)
+void AACC::Reserve(ACar* car)
 {
 	double EntryTime = GetWorld()->GetTimeSeconds();
 	double ArrivalTime = EntryTime + GetTimeToEntrance(car);
@@ -200,25 +149,58 @@ void AACC::RetryReservation(ACar* car)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Reservation accepted: %d"), car->GetID());
 		AddSlot(car);
-		if(GetWorldTimerManager().IsTimerActive(TimerMap[car]))
+		if(TimerMap.Contains(car))
 		{
-			GetWorldTimerManager().ClearTimer(TimerMap[car]);
+			if(GetWorldTimerManager().IsTimerActive(TimerMap[car]))
+			{
+				GetWorldTimerManager().ClearTimer(TimerMap[car]);
+			}
+			TimerMap.Remove(car);
 		}
-		CarsAwaitingReservation.Remove(car);
-		TimerMap.Remove(car);
+	}
+	else if(!TimerMap.Contains(car))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d Reservation attempted at: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
+		DecelerateCar(car);
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "Reserve", car);
+		FTimerHandle TimerHandle;
+		TimerMap.Add(car, TimerHandle);
+		GetWorldTimerManager().SetTimer(TimerMap[car], Delegate, TimerDuration, true);	
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Reservation DENIED: %d Reservation attempted at: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
-		if(car->GetTargetSpeedKPH() >= 10 && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < 1)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Speed Reduced"));
-			car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - 5);
-		}
-		else if(car->GetTargetSpeedKPH() <= 5)
-		{
-			car->SetTargetSpeedKPH(2.5);
-		}
+		DecelerateCar(car);
+	}
+}
+
+void AACC::DecelerateCar(ACar* car)
+{
+	if(car->GetTargetSpeedKPH() > CarSpeedLowerBound && (car->GetSpeedKPH() - car->GetTargetSpeedKPH()) < CarSpeedDeviationThreshold)
+	{
+		car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - CarSpeedDecrementStep);
+	}
+	else if(car->GetTargetSpeedKPH() <= CarSpeedLowerBound)
+	{
+		car->SetTargetSpeedKPH(CarSpeedFloor);
+	}
+}
+
+void AACC::SetEntrancePathIfUnset(ACar* car)
+{
+	if(!car->IsEntrancePathSet())
+	{
+		car->SetEntrancePath();
+		UE_LOG(LogTemp, Warning, TEXT("Setting Entrance Path of car %d"), car->GetID());
+	}
+}
+
+void AACC::AccelerateLeadCar()
+{
+	if(Slots.Num() >= 1 && Slots[0].Car->GetTargetSpeedKPH() < ACar::DEFAULT_SPEED_CEILING && FMath::Abs(Slots[0].Car->GetVehicleMovementComponent()->GetSteeringInput()) < CarSteeringInputThreshold)
+	{
+		Slots[0].Car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 	}
 }
 

@@ -6,21 +6,6 @@
 #include "SimulationConstants.h"
 #include "Kismet/GameplayStatics.h"
 
-void ACar::SetAttributes(int id, int x, int y, double orientation, int xdim, int ydim, double speed)
-{
-    
-}
-
-double ACar::GetSpeedEquivalent(int throttle) const
-{
-    return 0;
-}
-
-void ACar::AddRouteDirection(int direction)
-{
-    
-}
-
 double ACar::GetSpeedKPH() const
 {
     return FMath::Abs(GetVehicleMovementComponent()->GetForwardSpeed()) * 0.036;
@@ -31,21 +16,6 @@ double ACar::GetSpeed() const
     return FMath::Abs(GetVehicleMovementComponent()->GetForwardSpeed());
 }
 
-void ACar::SetThrottle(double throttle)
-{
-    GetVehicleMovementComponent()->SetThrottleInput(throttle);
-}
-
-void ACar::DecreaseThrottle(double throttle)
-{
-    if(GetVehicleMovementComponent()->GetThrottleInput() >= 0.1)
-    {
-        GetVehicleMovementComponent()->SetBrakeInput(0.25);
-        GetVehicleMovementComponent()->DecreaseThrottleInput(throttle);
-    }
-    
-}
-
 void ACar::UpdateHeading()
 {
     double rotation = GetActorRotation().Yaw;
@@ -53,7 +23,6 @@ void ACar::UpdateHeading()
     {
         rotation += 360;
     }
-    //UE_LOG(LogTemp, Warning, TEXT("Update Heading Called for car: %d rotation: %f"), ID, rotation);
     if(FMath::Abs(rotation) <= 45 || FMath::Abs(rotation - 360) <= 45)
     {
         Heading = WEST;
@@ -80,7 +49,7 @@ void ACar::MaintainSpeed()
 {
     if(GetSpeedKPH() > TargetSpeedKPH)
     {
-        GetVehicleMovementComponent()->DecreaseThrottleInput(0.1);
+        GetVehicleMovementComponent()->DecreaseThrottleInput(DEFAULT_THROTTLE_STEP);
         if(GetVehicleMovementComponent()->GetThrottleInput() < 0.1 && (GetSpeedKPH() - TargetSpeedKPH) > 2.5)
         {
             GetVehicleMovementComponent()->SetBrakeInput(0.5);
@@ -93,10 +62,9 @@ void ACar::MaintainSpeed()
     }
     else if(GetSpeedKPH() < TargetSpeedKPH)
     {
-        GetVehicleMovementComponent()->IncreaseThrottleInput(0.1);
+        GetVehicleMovementComponent()->IncreaseThrottleInput(DEFAULT_THROTTLE_STEP);
         GetVehicleMovementComponent()->SetBrakeInput(0);
     }
-    //UE_LOG(LogTemp, Warning, TEXT("Steering: %f"), GetVehicleMovementComponent()->GetSteeringInput());
 }
 
 void ACar::SetTargetSpeedKPH(double speed)
