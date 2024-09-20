@@ -20,6 +20,16 @@ AACC::AACC()
 	IntersectionBoundary->SetupAttachment(RootComponent);
 }
 
+void AACC::ResetReservations()
+{
+	CarsInsideIntersection.Empty();
+	ApproachingCars.Empty();
+	CarsAwaitingReservation.Empty();
+	Slots.Empty();
+	TimerMap.Empty();
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+}
+
 // Called when the game starts or when spawned
 void AACC::BeginPlay()
 {
@@ -81,6 +91,7 @@ void AACC::Tick(float DeltaTime)
 					UE_LOG(LogTemp, Warning, TEXT("Speed Reduced"));
 					car->SetTargetSpeedKPH(car->GetTargetSpeedKPH() - 5);
 				}
+				FTimerDelegate Delegate;
 				Delegate.BindUFunction(this, "RetryReservation", car);
 				FTimerHandle TimerHandle;
 				TimerMap.Add(car, TimerHandle);

@@ -17,6 +17,8 @@ class ACCORD_API AACC : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AACC();
+	UFUNCTION(BlueprintCallable)
+	void ResetReservations();
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,6 +39,7 @@ private:
 	TArray<ACar*> ApproachingCars;
 	TArray<ACar*> CarsAwaitingReservation;
 	TArray<IntersectionSlot> Slots;
+	TMap<ACar*, FTimerHandle> TimerMap;
 	IntersectionSlot* FindSlot(ACar* car);
 	ReservationManager ResMan;
 	int m_timeBaseNs{10 * 1000000};
@@ -54,7 +57,7 @@ private:
 	void RetryReservation(ACar* car);
 	UPROPERTY(EditInstanceOnly)
 	bool IsActive{true};
-	FTimerDelegate Delegate;
-	TMap<ACar*, FTimerHandle> TimerMap;
+	
+	
 
 };
