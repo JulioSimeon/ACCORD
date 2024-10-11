@@ -186,19 +186,4 @@ void AACC::AccelerateLeadCar()
 	}
 }
 
-TArray<ACar*> AACC::GetOverlappingCars()
-{
-	TArray<AActor*> Actors;
-	TArray<ACar*> Cars;
-	GetOverlappingActors(Actors);
-
-	for(AActor* actor : Actors)
-	{
-		if(ACar* car = Cast<ACar>(actor))
-		{
-			Cars.Add(car);
-		}
-	}
-	return Cars;
-}
 

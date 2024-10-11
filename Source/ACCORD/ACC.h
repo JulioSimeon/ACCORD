@@ -34,7 +34,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UBoxComponent* IntersectionBoundary;
 	Intersection m_intersection;
-	TArray<class ACar*> GetOverlappingCars();
 	TArray<IntersectionSlot> Slots;
 	TMap<ACar*, FTimerHandle> TimerMap;
 	IntersectionSlot* FindSlot(ACar* car);
