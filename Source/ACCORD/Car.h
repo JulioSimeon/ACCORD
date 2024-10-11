@@ -59,12 +59,12 @@ protected:
 	bool IsActive{};
 	FName GetPathTag() const;
 	AActor* GetActivePath(FName PathTag) const;
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetActivePath(AActor* Path);
 	UFUNCTION(BlueprintCallable)
 	void SetIsActive();
 	UFUNCTION(BlueprintCallable)
 	void SetDirection(int NewDirection);
+	UFUNCTION(BlueprintCallable)
+	void SetID(int NewID);
 	
 private:
 	UPROPERTY(EditInstanceOnly)
@@ -83,4 +83,15 @@ private:
 	bool ShouldPrintLogs{};
 	FName GetExitTag();
 	bool bIsEntrancePathSet{};
+	UPROPERTY(EditDefaultsOnly)
+	double CarSpeedDeviationThreshold{2.5};
+	UPROPERTY(EditDefaultsOnly)
+	double MaximumBrakingThrottleInput{0.1};
+	UPROPERTY(EditDefaultsOnly)
+	double BrakePower{0.5};
+	class USplineComponent* ActivePathSplineComponent = nullptr;
+	double GetCorrectSteeringValue();
+	double NormalizeTolerance{0.0001};
+	int TangentMultiplier{50};
+	void SetActivePathSplineComponent(FName PathTag);
 };

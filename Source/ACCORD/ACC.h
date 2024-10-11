@@ -35,7 +35,6 @@ private:
 	UBoxComponent* IntersectionBoundary;
 	Intersection m_intersection;
 	TArray<class ACar*> GetOverlappingCars();
-	TArray<ACar*> ApproachingCars;
 	TArray<IntersectionSlot> Slots;
 	TMap<ACar*, FTimerHandle> TimerMap;
 	IntersectionSlot* FindSlot(ACar* car);
@@ -59,11 +58,16 @@ private:
 	UPROPERTY(EditInstanceOnly)
 	bool IsActive{true};
 	double TimerDuration{0.25};
+	UPROPERTY(EditAnywhere)
 	double CarSpeedDecrementStep{5.f};
+	UPROPERTY(EditAnywhere)
 	double CarSpeedFloor{2.5}; //default 2.5
+	UPROPERTY(EditAnywhere)
 	double CarSpeedLowerBound{5.f};
 	int IntersectionResolution{4};
+	UPROPERTY(EditAnywhere)
 	double CarSteeringInputThreshold{0.5}; //default :0.5
+	UPROPERTY(EditAnywhere)
 	double CarSpeedDeviationThreshold{1.f};
 	const int LaneWidth{470};
 };

@@ -21,7 +21,6 @@ AACC::AACC()
 
 void AACC::ResetReservations()
 {
-	ApproachingCars.Empty();
 	Slots.Empty();
 	TimerMap.Empty();
 	GetWorldTimerManager().ClearAllTimersForObject(this);
@@ -43,20 +42,6 @@ void AACC::BeginPlay()
 void AACC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// if(IsActive)
-	// {
-	//	AccelerateLeadCar();
-	// 	TArray<ACar*> OverlappingCars = GetOverlappingCars();
-	// 	for(ACar* car : OverlappingCars)
-	// 	{
-	// 		if(FindSlot(car) || TimerMap.Contains(car) || !ApproachingCars.Contains(car)) // car already has reservation || timer has been set to retry reservation again || car already has left intersection but is still within boundaries
-	// 		{
-	// 			continue;
-	// 		}
-	// 		SetEntrancePathIfUnset(car);
-	// 		Reserve(car);
-	// 	}
-	// }
 }
 
 IntersectionSlot* AACC::FindSlot(ACar* car)
@@ -99,7 +84,6 @@ void AACC::OnCarEndBoundaryOverlap(class UPrimitiveComponent* OverlappedComp, AA
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
 		car->SetExitPath();
-		UE_LOG(LogTemp, Warning, TEXT("Setting Exit Path of car %d"), car->GetID());
 	}
 }
 
@@ -118,7 +102,6 @@ void AACC::OnCarEndIntersectionOverlap(class UPrimitiveComponent* OverlappedComp
 		ResMan.Remove(car->GetID());
 		car->SetTargetSpeedKPH(ACar::DEFAULT_SPEED_CEILING);
 		UE_LOG(LogTemp, Warning, TEXT("Car %d exited intersection at time: %f"), car->GetID(), GetWorld()->GetTimeSeconds());
-		ApproachingCars.Remove(car);
 	}
 }
 
@@ -126,8 +109,7 @@ void AACC::OnCarBeginBoundaryOverlap(UPrimitiveComponent* OverlappedComp, AActor
 {
 	if(ACar* car = Cast<ACar>(OtherActor))
 	{
-		ApproachingCars.Add(car);
-		if(FindSlot(car) || TimerMap.Contains(car) || !ApproachingCars.Contains(car)) // car already has reservation || timer has been set to retry reservation again || car already has left intersection but is still within boundaries
+		if(FindSlot(car) || TimerMap.Contains(car)) // car already has reservation || timer has been set to retry reservation again
 		{
 			return;
 		}

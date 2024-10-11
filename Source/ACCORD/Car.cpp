@@ -5,6 +5,8 @@
 #include "ChaosVehicleMovementComponent.h"
 #include "SimulationConstants.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/SplineComponent.h"
+ #include "Kismet/KismetMathLibrary.h"
 
 double ACar::GetSpeedKPH() const
 {
@@ -50,9 +52,9 @@ void ACar::MaintainSpeed()
     if(GetSpeedKPH() > TargetSpeedKPH)
     {
         GetVehicleMovementComponent()->DecreaseThrottleInput(DEFAULT_THROTTLE_STEP);
-        if(GetVehicleMovementComponent()->GetThrottleInput() < 0.1 && (GetSpeedKPH() - TargetSpeedKPH) > 2.5)
+        if(GetVehicleMovementComponent()->GetThrottleInput() < MaximumBrakingThrottleInput && (GetSpeedKPH() - TargetSpeedKPH) > CarSpeedDeviationThreshold)
         {
-            GetVehicleMovementComponent()->SetBrakeInput(0.5);
+            GetVehicleMovementComponent()->SetBrakeInput(BrakePower);
             //UE_LOG(LogTemp, Warning, TEXT("BRAKING!!!!! Car ID: %d Speed: %f TargetSpeed: %f"), ID, GetSpeedKPH(), TargetSpeedKPH);
         }
         else
@@ -81,10 +83,7 @@ void ACar::SetExitPath()
 {
     UpdateHeading();
     ActivePathTag = GetExitTag();
-    if(AActor* Path = GetActivePath(ActivePathTag))
-    {
-        SetActivePath(Path);
-    }
+    SetActivePathSplineComponent(ActivePathTag);
     bIsEntrancePathSet = false;
 }
 
@@ -92,10 +91,7 @@ void ACar::SetEntrancePath()
 {
     UpdateHeading();
     ActivePathTag = GetPathTag();
-    if(AActor* Path = GetActivePath(ActivePathTag))
-    {
-        SetActivePath(Path);
-    }
+    SetActivePathSplineComponent(ActivePathTag);
     bIsEntrancePathSet = true;
 }
 
@@ -158,6 +154,11 @@ void ACar::SetDirection(int NewDirection)
     Direction = NewDirection;
 }
 
+void ACar::SetID(int NewID)
+{
+    ID = NewID;
+}
+
 void ACar::PrintLogs()
 {
     UE_LOG(LogTemp, Warning, TEXT("Car ID: %d Speed KPH: %f Throttle Input: %f Target Speed: %f"), ID, GetSpeedKPH(), GetVehicleMovementComponent()->GetThrottleInput(), TargetSpeedKPH);
@@ -180,12 +181,35 @@ FName ACar::GetExitTag()
     }
 }
 
+double ACar::GetCorrectSteeringValue()
+{
+    if(ActivePathSplineComponent)
+    {
+        FVector tangent = ActivePathSplineComponent->FindTangentClosestToWorldLocation(GetActorLocation(), ESplineCoordinateSpace::World);
+        tangent.Normalize(NormalizeTolerance);
+        tangent *= TangentMultiplier;
+        FVector target = ActivePathSplineComponent->FindLocationClosestToWorldLocation(GetActorLocation() + tangent, ESplineCoordinateSpace::World);
+        double SteeringValue = UKismetMathLibrary::NormalizedDeltaRotator(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), target), GetActorRotation()).Yaw;
+        return UKismetMathLibrary::MapRangeClamped(SteeringValue, -90, 90, -1, 1);
+    }
+    return 0;
+}
+
+void ACar::SetActivePathSplineComponent(FName PathTag)
+{
+    if(AActor* Path = GetActivePath(PathTag))
+    {
+        ActivePathSplineComponent = Path->FindComponentByClass<USplineComponent>();
+    }
+}
+
 void ACar::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
     if(IsActive)
     {
         MaintainSpeed();
+        GetVehicleMovementComponent()->SetSteeringInput(GetCorrectSteeringValue());
     }
     if(ShouldPrintLogs)
     {
